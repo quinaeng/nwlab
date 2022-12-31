@@ -1,0 +1,45 @@
+conf t
+
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service sequence-numbers
+
+hostname Router1
+username user01 password P@ssw0rd
+
+clock timezone JST 9 
+
+ip domain-name test.local
+ip ssh version 2
+
+enable secret P@ssw0rd
+service password-encryption
+
+crypto key generate rsa
+yes
+1024
+
+ntp server 192.168.10.1 prefer
+ntp server 192.168.10.2
+
+snmp-server community project
+snmp-server 192.168.10.1 
+
+logging buffered 512000
+logging host 192.168.10.1
+
+logging trap informational
+logging facility local5
+
+line con 0
+exec-timeout 0 0
+logging synchronous
+password passcon
+login
+
+line vty 0 4
+exec-timeout 0 0
+logging synchronous
+transport input ssh
+
+end
